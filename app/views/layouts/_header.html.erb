@@ -1,0 +1,33 @@
+<div class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <%= link_to 'MTT Parser', root_path, class: 'navbar-brand' %>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <%= menu_item 'First link', root_path, class: 'link_to_loader' %>
+        <%= menu_item 'Second link', root_path, class: 'link_to_loader' %>
+        <%= menu_item 'Third link', root_path, class: 'link_to_loader' %>
+        <%= menu_item 'Fourth link', root_path, class: 'link_to_loader' %>
+            <%= drop_down "First DD" do %>
+                <%= menu_item 'Link1', root_path, class: 'link_to_loader' %>
+                <%= menu_item 'Link2', root_path, class: 'link_to_loader' %>
+            <% end %>
+
+            <%= drop_down "Second DD" do %>
+                <%= menu_item 'Link1', root_path, class: 'link_to_loader' %>
+                <%= menu_item 'Link2', root_path, class: 'link_to_loader' %>
+            <% end %>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">UserName</a></li>
+        <li><a href="#">Logg out</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</div>
