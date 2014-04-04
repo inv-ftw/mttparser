@@ -10,10 +10,10 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <%= menu_item 'First link', root_path, class: 'link_to_loader' %>
-        <%= menu_item 'Second link', root_path, class: 'link_to_loader' %>
-        <%= menu_item 'Third link', root_path, class: 'link_to_loader' %>
-        <%= menu_item 'Fourth link', root_path, class: 'link_to_loader' %>
+        <%= menu_item 'Items', items_index_path, class: 'link_to_loader' %>
+        <%= menu_item 'Shops', shops_index_path, class: 'link_to_loader' %>
+        <%= menu_item 'Tags', tags_index_path, class: 'link_to_loader' %>
+        <%= menu_item 'Results', results_index_path, class: 'link_to_loader' %>
             <%= drop_down "First DD" do %>
                 <%= menu_item 'Link1', root_path, class: 'link_to_loader' %>
                 <%= menu_item 'Link2', root_path, class: 'link_to_loader' %>
@@ -26,7 +26,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">UserName</a></li>
-        <li><a href="#">Logg out</a></li>
+        <li><a href="#">Log out</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>
