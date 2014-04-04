@@ -13,16 +13,11 @@
         <%= menu_item 'Items', items_index_path, class: 'link_to_loader' %>
         <%= menu_item 'Shops', shops_index_path, class: 'link_to_loader' %>
         <%= menu_item 'Tags', tags_index_path, class: 'link_to_loader' %>
-        <%= menu_item 'Results', results_index_path, class: 'link_to_loader' %>
-            <%= drop_down "First DD" do %>
+            <%= drop_down "Reports" do %>
                 <%= menu_item 'Link1', root_path, class: 'link_to_loader' %>
                 <%= menu_item 'Link2', root_path, class: 'link_to_loader' %>
             <% end %>
 
-            <%= drop_down "Second DD" do %>
-                <%= menu_item 'Link1', root_path, class: 'link_to_loader' %>
-                <%= menu_item 'Link2', root_path, class: 'link_to_loader' %>
-            <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">UserName</a></li>
