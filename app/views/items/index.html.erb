@@ -1,2 +1,18 @@
-<h1>Items#index</h1>
-<p>Find me in app/views/items/index.html.erb</p>
+<%= link_to 'Добавить товар', new_item_path ,class: 'pull-right btn btn-primary' %>
+<table class="table table-hover table-striped">
+  <thead>
+    <th>Название</th>
+    <th>Рекомендованная цена</th>
+    <th></th>
+    <th></th>
+  </thead>
+  <% @items.each do |item| %>
+      <tr>
+        <td><%= item.name %></td>
+        <td><%= item.price %>$</td>
+        <td><%= link_to 'ред.', edit_item_path(item) %> </td>
+        <td><%= link_to 'x', item_path(item), method: :delete, confirm: 'Удалить?', style: 'color: red;' %> </td>
+      </tr>
+  <% end %>
+</table>
+

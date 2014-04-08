@@ -10,18 +10,14 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <%= menu_item 'Items', items_index_path, class: 'link_to_loader' %>
-        <%= menu_item 'Shops', shops_index_path, class: 'link_to_loader' %>
-        <%= menu_item 'Tags', tags_index_path, class: 'link_to_loader' %>
-            <%= drop_down "Reports" do %>
-                <%= menu_item 'Link1', root_path, class: 'link_to_loader' %>
-                <%= menu_item 'Link2', root_path, class: 'link_to_loader' %>
-            <% end %>
+        <%= menu_item 'Items', items_path, class: 'link_to_loader' %>
+        <%= menu_item 'Shops', shops_path, class: 'link_to_loader' %>
+        <% #menu_item 'Tags', tags_path, class: 'link_to_loader' %>
+
 
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">UserName</a></li>
-        <li><a href="#">Log out</a></li>
+        <li><%= link_to 'Выйти', logout_path %></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>

@@ -31,6 +31,8 @@ gem 'spring',        group: :development
 
 gem 'nokogiri'
 
+gem 'bcrypt'
+
 group :development do
   gem 'thin'
   gem 'pry'

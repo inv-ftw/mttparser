@@ -2,7 +2,7 @@
     <fieldset>
 
       <!-- Form Name -->
-      <legend>Редактирование магазина</legend>
+      <legend>Добавить магазин</legend>
 
       <!-- Text input-->
       <div class="form-group">
@@ -24,17 +24,17 @@
       </div>
 
       <% if @shop.tags.any? %>
-        <h3>Теги</h3>
+          <h3>Теги</h3>
       <% end %>
       <%= f.fields_for :tags do |builder| %>
-        <%= render 'tag_fields', f: builder %>
+          <%= render 'tag_fields', f: builder %>
       <% end  %>
       <%= link_to_add_fields 'Добавить тэг', f, :tags %>
       <!-- Button -->
       <div class="form-group">
         <label class="col-md-4 control-label" for="login"></label>
         <div class="col-md-4">
-          <%= f.submit 'Обновить', class: 'btn btn-primary' %>
+          <%= f.submit 'Добавить', class: 'btn btn-primary' %>
         </div>
       </div>
 

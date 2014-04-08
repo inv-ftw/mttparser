@@ -1,15 +1,14 @@
-<%= form_for @item, html: {class: 'form-horizontal'} do |f| %>
+<%= form_for @item, html: {class:'form-horizontal'} do |f| %>
     <fieldset>
 
       <!-- Form Name -->
-      <legend>Редактирование товара</legend>
+      <legend>Добавить товар</legend>
 
       <!-- Text input-->
       <div class="form-group">
         <label class="col-md-4 control-label" for="name">Название</label>
         <div class="col-md-4">
           <%= f.text_field :name, class:'form-control input-md', placeholder: 'Название товара', required: true %>
-
         </div>
       </div>
 
@@ -27,7 +26,7 @@
       <div class="form-group">
         <label class="col-md-4 control-label" for="login"></label>
         <div class="col-md-4">
-          <%= f.submit 'Обновить', class: 'btn btn-primary' %>
+          <%= f.submit 'Добавить', class: 'btn btn-primary' %>
         </div>
       </div>
 

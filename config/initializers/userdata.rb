@@ -1,0 +1,1 @@
+USERDATA = ['superlogin', 'superpassword']

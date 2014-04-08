@@ -1,20 +1,13 @@
 Rails.application.routes.draw do
-  get 'tags/index'
 
-  get 'tags/edit'
+  resources :items
+  resources :tags
+  resources :results
+  resources :shops
+  resources :sessions
 
-  get 'shops/index'
-
-  get 'shops/edit'
-
-  get 'results/index'
-
-  get 'results/edit'
-
-  get 'items/index'
-
-  get 'items/edit'
-
+  get 'login', to: 'sessions#new', as: 'login'
+  get 'logout', to: 'sessions#destroy', as: 'logout'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
