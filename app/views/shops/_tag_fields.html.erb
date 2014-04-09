@@ -12,8 +12,16 @@
   <div class="form-group">
     <%= f.label :destination, 'Назначение', class: 'col-md-4 control-label' %>
     <div class="col-md-4">
-
-      <%= f.text_field :destination, class:'form-control input-md' %>
+        <%= f.select :destination, ['item', 'price'], {}, { class:'select-picker' } %>
     </div>
   </div>
 </fieldset>
+
+<script>
+    $(document).ready(function(){
+        $('select.select-picker').selectpicker({
+            style: 'btn-info',
+            size: 4
+        });
+    });
+</script>

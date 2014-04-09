@@ -32,6 +32,7 @@ gem 'spring',        group: :development
 gem 'nokogiri'
 
 gem 'bcrypt'
+gem 'bootstrap-select-rails'
 
 group :development do
   gem 'thin'
