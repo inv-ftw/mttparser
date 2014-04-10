@@ -2,11 +2,11 @@
     <fieldset>
 
       <!-- Form Name -->
-      <legend>Добавить магазин</legend>
+      <legend><i class="fa fa-shopping-cart"></i> Добавить магазин</legend>
 
       <!-- Text input-->
       <div class="form-group">
-        <label class="col-md-4 control-label" for="name">Имя</label>
+        <label class="col-md-4 control-label" for="name">Адрес:</label>
         <div class="col-md-4">
           <%= f.text_field :name, class:'form-control input-md', placeholder: 'Название магазина', required: true %>
 
@@ -15,7 +15,7 @@
 
       <!-- Password input-->
       <div class="form-group">
-        <label class="col-md-4 control-label" for="url">Адрес</label>
+        <label class="col-md-4 control-label" for="url">Ссылка поиска:</label>
         <div class="col-md-4">
 
           <%= f.text_field :url, class: 'form-control input-md', placeholder: 'Ссылка', required: true %>
@@ -29,7 +29,7 @@
       <%= f.fields_for :tags do |builder| %>
           <%= render 'tag_fields', f: builder %>
       <% end  %>
-      <%= link_to_add_fields 'Добавить тэг', f, :tags %>
+      <%= link_to_add_fields raw('<i class="fa fa-tag"></i> Добавить тэг'), f, :tags %>
       <!-- Button -->
       <div class="form-group">
         <label class="col-md-4 control-label" for="login"></label>

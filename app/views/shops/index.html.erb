@@ -1,17 +1,21 @@
 <%= link_to 'Добавить магазин', new_shop_path,class: 'pull-right btn btn-primary', data:{no_turbolink: true} %>
 <table class="table table-hover table-striped">
   <thead>
-    <th>Название</th>
-    <th>Ссылка</th>
+    <th>#</th>
+    <th>Адрес</th>
+    <th>Ссылка поиска</th>
+    <th></th>
     <th></th>
     <th></th>
   </thead>
   <% @shops.each do |shop| %>
       <tr>
-        <td><%= shop.name %></td>
+        <td><%= shop.id %></td>
+        <td><%= link_to shop.name, "http://#{shop.name}", target: '_blank' %></td>
         <td><%= shop.url %></td>
-        <td><%= link_to 'ред.', edit_shop_path(shop), data:{no_turbolink: true} %> </td>
-        <td><%= link_to 'x', shop_path(shop), method: :delete, confirm: 'Удалить?', style: 'color: red;' %> </td>
+        <td><%= raw('<i class="fa fa-tags"></i>') if !shop.tags.blank? %></td>
+        <td><%= link_to raw('<i class="fa fa-pencil"></i> ред.'), edit_shop_path(shop), class: 'btn btn-xs btn-default', data:{no_turbolink: true} %> </td>
+        <td><%= link_to raw('<i class="fa fa-times"></i>'), shop_path(shop), method: :delete, confirm: 'Удалить?', class: 'btn btn-xs btn-default', style: 'color: red;' %> </td>
       </tr>
   <% end %>
 </table>

@@ -1,7 +1,7 @@
 <fieldset style="border-top: 1px dashed lightgrey; padding-top: 15px;">
   <div class="form-group">
     <%= f.hidden_field :_destroy %>
-    <%= link_to 'x', '#', class: 'pull-right remove_fields', style: 'color: red;' %>
+    <%= link_to raw('<i class="fa fa-trash-o"></i>'), '#', class: 'pull-right remove_fields btn btn-xs btn-default', style: 'color: red;' %>
     <%= f.label :name, 'Имя', class: 'col-md-4 control-label' %>
     <div class="col-md-4">
 
