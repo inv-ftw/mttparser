@@ -29,7 +29,7 @@
       <%= f.fields_for :tags do |builder| %>
         <%= render 'tag_fields', f: builder %>
       <% end  %>
-      <%= link_to_add_fields raw('<i class="fa fa-tag"></i> Добавить тэг '), f, :tags %>
+      <%= link_to_add_fields raw('<i class="fa fa-tag"></i> Добавить тэг'), f, :tags %>
       <!-- Button -->
       <div class="form-group">
         <label class="col-md-4 control-label" for="login"></label>
