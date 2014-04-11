@@ -3,7 +3,9 @@
 <table class="table table-hover table-striped">
   <thead>
     <th>#</th>
+    <th>Артикул</th>
     <th>Название</th>
+    <th>Бренд</th>
     <th>Рекомендованная цена</th>
     <th></th>
 
@@ -11,7 +13,9 @@
   <% @items.each do |item| %>
       <tr>
         <td><%= item.id %></td>
+        <td><%= item.sku %></td>
         <td><%= item.name %></td>
+        <td><%= item.brand %></td>
         <td><%= item.price %>$</td>
         <td><%= link_to raw('<i class="fa fa-pencil"></i> ред.'), edit_item_path(item), class: 'btn btn-xs btn-info' %>
             <%= link_to raw('<i class="fa fa-times"></i>'), item_path(item), method: :delete, confirm: 'Удалить?', class: 'hint btn btn-xs btn-danger', title: 'Удалить' %>
@@ -20,3 +24,13 @@
   <% end %>
 </table>
 
+<% if Rails.env.development? %>
+    <div id="import" style="padding: 5px">
+        Импортировать из CSV файла (колонки: 'id', 'name', 'price', 'brand', 'sku').
+
+        <%= form_tag import_items_path, multipart: true do %>
+            <%= file_field_tag :file %>
+            <%= submit_tag "Импорт" %>
+        <% end %>
+    </div>
+<% end %>

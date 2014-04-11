@@ -10,14 +10,14 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <%= menu_item raw('<i class="fa fa-beer"></i> Товары'), items_path, class: 'link_to_loader' %>
-        <%= menu_item raw('<i class="fa fa-shopping-cart"></i> Магазины'), shops_path, class: 'link_to_loader' %>
+        <%= menu_item raw('<i class="fa fa-beer"></i> <b>Товары</b>'), items_path, class: 'link_to_loader' %>
+        <%= menu_item raw('<i class="fa fa-shopping-cart"></i> <b>Магазины</b>'), shops_path, class: 'link_to_loader' %>
         <% #menu_item 'Tags', tags_path, class: 'link_to_loader' %>
 
 
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to raw('<i class="fa fa-sign-out"></i> Выйти'), logout_path %></li>
+        <li><%= link_to raw('<i class="fa fa-sign-out"></i> <b>Выйти</b>'), logout_path %></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>

@@ -4,6 +4,22 @@
       <!-- Form Name -->
       <legend><i class="fa fa-beer"></i> Добавить товар</legend>
 
+      <!-- Brand input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="name">Бренд</label>
+        <div class="col-md-4">
+            <%= f.select :brand, Item::BRANDS, {}, class:'form-control input-md', required: true %>
+        </div>
+      </div>
+
+      <!-- SKU input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="name">Артикул</label>
+        <div class="col-md-4">
+          <%= f.text_field :sku, class:'form-control input-md', placeholder: 'Артикул / Парт. номер', required: true %>
+        </div>
+      </div>
+
       <!-- Text input-->
       <div class="form-group">
         <label class="col-md-4 control-label" for="name">Название</label>
@@ -17,7 +33,7 @@
         <label class="col-md-4 control-label" for="price">Цена</label>
         <div class="col-md-4">
 
-          <%= f.text_field :price, class: 'form-control input-md', placeholder: 'Цена в долларах', required: true %>
+          <%= f.text_field :price, class: 'form-control input-md', placeholder: 'Цена в долларах ##.##', required: true %>
 
         </div>
       </div>

@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
-  resources :items
+  resources :items do
+    collection { post :import }
+  end
   resources :tags
   resources :results
   resources :shops

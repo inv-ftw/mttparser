@@ -33,12 +33,17 @@ class ItemsController < ApplicationController
 
   def destroy
     Item.find(params[:id]).destroy
-    redirect_to items_path
+    redirect_to items_path, notice: 'Товар удален.'
+  end
+
+  def import
+    Item.import(params[:file])
+    redirect_to items_path, notice: "Products imported."
   end
 
   private
   def item_params
-    params.require(:item).permit(:name, :price)
+    params.require(:item).permit(:name, :price, :brand, :sku)
   end
 
 end

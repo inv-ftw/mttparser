@@ -31,6 +31,11 @@ class ShopsController < ApplicationController
     end
   end
 
+  def destroy
+    Item.find(params[:id]).destroy
+    redirect_to shops_path, notice: 'Магазин удален.'
+  end
+
   private
 
   def shop_params
