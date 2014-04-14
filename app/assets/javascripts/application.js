@@ -36,6 +36,7 @@ ready = function () {
 
     $('.hint').tooltip();
 
-});
+};
+
 $(document).ready(ready);
 $(document).on('page:load', ready);

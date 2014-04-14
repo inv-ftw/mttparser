@@ -18,7 +18,7 @@
         <td><%= item.brand %></td>
         <td><%= item.price %>$</td>
         <td><%= link_to raw('<i class="fa fa-pencil"></i> ред.'), edit_item_path(item), class: 'btn btn-xs btn-info' %>
-            <%= link_to raw('<i class="fa fa-times"></i>'), item_path(item), method: :delete, confirm: 'Удалить?', class: 'hint btn btn-xs btn-danger', title: 'Удалить' %>
+            <%= link_to raw('<i class="fa fa-times"></i>'), item_path(item), method: :delete, data: { confirm: 'Удалить?' }, class: 'hint btn btn-xs btn-danger', title: 'Удалить' %>
         </td>
       </tr>
   <% end %>

@@ -20,7 +20,7 @@
           <% end %>
         </td>
         <td><%= link_to raw('<i class="fa fa-pencil"></i> ред.'), edit_shop_path(shop), class: 'btn btn-xs btn-info', data:{no_turbolink: true} %> </td>
-        <td><%= link_to raw('<i class="fa fa-times"></i>'), shop_path(shop), method: :delete, confirm: 'Удалить?', class: 'hint btn btn-xs btn-danger', title: 'Удалить' %> </td>
+        <td><%= link_to raw('<i class="fa fa-times"></i>'), shop_path(shop), method: :delete, data: { confirm: 'Удалить?' }, class: 'hint btn btn-xs btn-danger', title: 'Удалить' %> </td>
       </tr>
   <% end %>
 </table>
