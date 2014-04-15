@@ -1,6 +1,6 @@
 class ResultsController < ApplicationController
   def index
-    @results = Result.all
+    @results = Result.all.order(:shop_id)
   end
 
   def edit
