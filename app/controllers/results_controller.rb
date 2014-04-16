@@ -3,6 +3,7 @@ class ResultsController < ApplicationController
     @results = Result.all
   end
 
-  def edit
+  def proceed
+
   end
 end
