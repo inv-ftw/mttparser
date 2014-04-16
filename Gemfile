@@ -22,6 +22,9 @@ gem 'jquery-datatables-rails', git: 'git://github.com/rweng/jquery-datatables-ra
 gem 'will_paginate'
 gem 'nokogiri'
 gem 'bcrypt'
+gem 'bootstrap-select-rails'
+gem 'delayed_job_active_record'
+
 
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc

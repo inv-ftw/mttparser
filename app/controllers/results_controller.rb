@@ -4,6 +4,7 @@ class ResultsController < ApplicationController
 
   end
 
-  def edit
+  def proceed
+
   end
 end
