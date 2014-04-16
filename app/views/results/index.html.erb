@@ -54,7 +54,7 @@
                                class: 'form-control'%>
               </div>
               <div class="form-group">
-                <button type="submit" class="btn btn-primary">Отфильтровать</button>
+                <button type="submit" class="btn btn-success">Отфильтровать</button>
               </div>
           <% end %>
         </div>
@@ -86,13 +86,21 @@
       <tbody>
           <% @results.each do |result| %>
 
-              <tr <%= raw('class="danger"') if (result.price_diff >= 10) %> >
+              <tr <%= raw('class="danger"') if (!result.price_diff.nil? && result.price_diff >= 10) %> >
                 <td><%= result.id %></td>
                 <td><%= result.shop.name %></td>
                 <td><%= result.item.brand %></td>
                 <td><%= result.item.name %></td>
-                <td><%= result.current_price * params[:ye].to_f %> грн.</td>
-                <td><%= result.price_diff %></td>
+                <% if result.current_price && !params[:ye].blank?%>
+                    <td> <%= result.current_price * params[:ye].to_f %> грн.</td>
+                <% else %>
+                    <td> <%= result.current_price %> $ </td>
+                <% end %>
+                <% if result.price_diff %>
+                    <td><%= result.price_diff.round(2) %></td>
+                <% else %>
+                    <td> - </td>
+                <% end %>
               </tr>
 
           <% end %>
