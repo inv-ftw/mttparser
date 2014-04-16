@@ -1,28 +1,43 @@
-    <div class="well">
-      <%= form_tag results_path, { method: :get, class: 'form-inline' } do %>
-        <div class="form-group">
-          <%= label_tag :diff, 'Допуск $:', class: 'control-label' %>
-          <%= text_field_tag :diff, params[:diff], class: 'form-control', placeholder: 'Допуск $'%>
-        </div>
-        <div class="form-group">
-          <%= label_tag :ye, 'Курс $:', class: 'control-label' %>
-          <%= text_field_tag :ye, params[:ye], class: 'form-control', placeholder: 'Курс доллара'%>
-        </div>
-        <div class="form-group">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox"> Запомнить
-          </label>
-        </div>
-          <button type="submit" class="btn btn-primary">Сканировать...</button>
-        </div>
-      <% end %>
-    </div>
-
-    <div class="panel panel-default" id="filter">
-      <div class="panel-heading">Фильтр</div>
+    <div class="panel panel-default" id="results">
+      <div class="panel-heading"><strong>Управление сканированием</strong>
+        <div class="pull-right">время последнего запуска: <%= Time.now.strftime("%H:%M / %d-%m-%Y") %></div>
+      </div>
       <div class="panel-body">
-        <div id="filter">
+
+          <%= form_tag results_path, { method: :get, class: 'form-inline' } do %>
+              <div class="form-group">
+                <%= label_tag :diff, 'Допуск %', class: 'control-label' %>
+                <%= text_field_tag :diff, params[:diff], class: 'form-control', placeholder: '%'%>
+              </div>
+              <div class="form-group">
+                <%= label_tag :ex_rate, 'Курс $', class: 'control-label' %>
+                <%= text_field_tag :ex_rate, params[:ex_rate], class: 'form-control', placeholder: 'грн за 1$'%>
+              </div>
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Запомнить
+                  </label>
+                </div>
+                <!-- Split button -->
+                <div class="btn-group">
+                  <%= submit_tag 'Сканировать...', name: nil, class: 'btn btn-success' %>
+                  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Все данные</a></li>
+                    <li><a href="#">Только фильтр</a></li>
+                  </ul>
+                </div>
+              </div>
+
+          <% end %>
+
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item">
           <%= form_tag results_path, { method: :get, class: 'form-inline' } do %>
               <div class="form-group">
                 <%= label_tag :shop,
@@ -54,50 +69,53 @@
                                class: 'form-control'%>
               </div>
               <div class="form-group">
-                <button type="submit" class="btn btn-success">Отфильтровать</button>
+              </div>
+              <div class="form-group">
+                <%= submit_tag 'Отфильтровать', name: nil, class: 'btn btn-primary'%>
+              </div>
+              <div class="form-group">
+                <%= link_to 'Сбросить', results_path, class: 'btn btn-info' %>
               </div>
           <% end %>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
 
-<div class="panel panel-default">
-  <!-- Default panel contents -->
-  <div class="panel-heading"><strong>Результат сканирования</strong>
-    <div class="pull-right">результат обновлен: <%= Time.now.strftime("%H:%M / %d-%m-%Y") %></div>
-  </div>
-  <div class="panel-body">
+    <hr>
+    <h4 class="pull-right">*данные актуальны на: <span class="label label-info"><%= Time.now.strftime("%H:%M / %d-%m-%Y") %></span></h4>
+    <h3>Результат сканирования: </h3>
 
-  </div>
 
   <!-- Table -->
 
-    <table class="table table-hover table-striped datatable">
+    <table class="datatable table table-hover table-bordered table-striped">
       <thead>
           <tr>
-            <th>ID</th>
-            <th>Магазин</th>
+            <th>Артикул</th>
+            <th>Название товара</th>
             <th>Бренд</th>
-            <th>Товар</th>
+            <th>Магазин</th>
+            <th>Рекомендуемая цена</th>
             <th>Цена в магазине</th>
-            <th>Разница</th>
+            <th>Отклонение</th>
           </tr>
       </thead>
       <tbody>
           <% @results.each do |result| %>
-
-              <tr <%= raw('class="danger"') if (!result.price_diff.nil? && result.price_diff >= 10) %> >
-                <td><%= result.id %></td>
-                <td><%= result.shop.name %></td>
-                <td><%= result.item.brand %></td>
+            <% diff = (((result.item.price*result.ex_rate - result.current_price).to_f/(result.item.price*result.ex_rate).to_f)*100) %>
+              <tr <%= raw('class="danger"') if (!result.price_diff.nil? && diff > result.price_diff) %> >
+                <td><%= result.item.sku %></td>
                 <td><%= result.item.name %></td>
-                <% if result.current_price && !params[:ye].blank?%>
-                    <td> <%= result.current_price * params[:ye].to_f %> грн.</td>
+                <td><%= result.item.brand %></td>
+                <td><%= result.shop.name %></td>
+                <td><%= (result.item.price * result.ex_rate).round(2) %><span class="hint" data-placement="right" title="Курс $: <%= result.ex_rate %>"> грн.</span></td>
+                <% if result.current_price %>
+                    <td> <%= result.current_price.round(2) %> грн.</td>
                 <% else %>
-                    <td> <%= result.current_price %> $ </td>
+                    <td> - </td>
                 <% end %>
-                <% if result.price_diff %>
-                    <td><%= result.price_diff.round(2) %></td>
+                <% if result.price_diff and diff >= 0 %>
+                    <td><%= diff.round(2) %>%</td>
                 <% else %>
                     <td> - </td>
                 <% end %>
@@ -106,5 +124,3 @@
           <% end %>
       </tbody>
     </table>
-
-</div>

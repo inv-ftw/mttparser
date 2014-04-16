@@ -1,8 +1,9 @@
 <strong class="pull-left" >Всего: <span class="badge"><%= @items.count %></span></strong>
 <%= link_to raw('<i class="fa fa-plus"></i> <b>Добавить товар</b>'), new_item_path ,class: 'pull-right btn btn-primary' %>
+<p class="clearfix"></p>
+<hr>
 <table class="table table-hover table-striped datatable">
   <thead>
-    <th>#</th>
     <th>Артикул</th>
     <th>Название</th>
     <th>Бренд</th>
@@ -13,7 +14,6 @@
   <tbody>
       <% @items.each do |item| %>
           <tr>
-            <td><%= item.id %></td>
             <td><%= item.sku %></td>
             <td><%= item.name %></td>
             <td><%= item.brand %></td>

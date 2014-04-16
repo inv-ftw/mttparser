@@ -22,7 +22,6 @@ gem 'jquery-datatables-rails', git: 'git://github.com/rweng/jquery-datatables-ra
 gem 'will_paginate'
 gem 'nokogiri'
 gem 'bcrypt'
-gem 'bootstrap-select-rails'
 gem 'delayed_job_active_record'
 
 
