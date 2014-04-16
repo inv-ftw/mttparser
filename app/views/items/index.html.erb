@@ -1,6 +1,6 @@
 <strong class="pull-left" >Всего: <span class="badge"><%= @items.count %></span></strong>
 <%= link_to raw('<i class="fa fa-plus"></i> <b>Добавить товар</b>'), new_item_path ,class: 'pull-right btn btn-primary' %>
-<table class="table table-hover table-striped">
+<table class="table table-hover table-striped datatable">
   <thead>
     <th>#</th>
     <th>Артикул</th>
@@ -10,18 +10,20 @@
     <th></th>
 
   </thead>
-  <% @items.each do |item| %>
-      <tr>
-        <td><%= item.id %></td>
-        <td><%= item.sku %></td>
-        <td><%= item.name %></td>
-        <td><%= item.brand %></td>
-        <td><%= item.price %>$</td>
-        <td><%= link_to raw('<i class="fa fa-pencil"></i> ред.'), edit_item_path(item), class: 'btn btn-xs btn-info' %>
-            <%= link_to raw('<i class="fa fa-times"></i>'), item_path(item), method: :delete, data: { confirm: 'Удалить?' }, class: 'hint btn btn-xs btn-danger', title: 'Удалить' %>
-        </td>
-      </tr>
-  <% end %>
+  <tbody>
+      <% @items.each do |item| %>
+          <tr>
+            <td><%= item.id %></td>
+            <td><%= item.sku %></td>
+            <td><%= item.name %></td>
+            <td><%= item.brand %></td>
+            <td><%= item.price %>$</td>
+            <td><%= link_to raw('<i class="fa fa-pencil"></i> ред.'), edit_item_path(item), class: 'btn btn-xs btn-info' %>
+                <%= link_to raw('<i class="fa fa-times"></i>'), item_path(item), method: :delete, data: { confirm: 'Удалить?' }, class: 'hint btn btn-xs btn-danger', title: 'Удалить' %>
+            </td>
+          </tr>
+      <% end %>
+  </tbody>
 </table>
 
 <% if Rails.env.development? %>

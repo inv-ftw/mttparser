@@ -1,55 +1,101 @@
     <div class="well">
-      <form class="form-inline" role="form">
+      <%= form_tag results_path, { method: :get, class: 'form-inline' } do %>
         <div class="form-group">
-          <label class="sr-only" for="exampleInput1">Адрес</label>
-          <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Адрес">
+          <%= label_tag :diff, 'Допуск $:', class: 'control-label' %>
+          <%= text_field_tag :diff, params[:diff], class: 'form-control', placeholder: 'Допуск $'%>
         </div>
         <div class="form-group">
-          <label class="sr-only" for="exampleInput2">Цена</label>
-          <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Цена">
+          <%= label_tag :ye, 'Курс $:', class: 'control-label' %>
+          <%= text_field_tag :ye, params[:ye], class: 'form-control', placeholder: 'Курс доллара'%>
         </div>
         <div class="form-group">
-          <label class="sr-only" for="exampleInput3">Отклонение</label>
-          <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Отклонение">
-        </div>
         <div class="checkbox">
           <label>
             <input type="checkbox"> Запомнить
           </label>
         </div>
-            <div class="pull-right">
-                <button type="submit" class="btn btn-default">Поехали!</button>
-            </div>
-      </form>
+          <button type="submit" class="btn btn-primary">Сканировать...</button>
+        </div>
+      <% end %>
     </div>
 
+    <div class="panel panel-default" id="filter">
+      <div class="panel-heading">Фильтр</div>
+      <div class="panel-body">
+        <div id="filter">
+          <%= form_tag results_path, { method: :get, class: 'form-inline' } do %>
+              <div class="form-group">
+                <%= label_tag :shop,
+                              'Магазин:', class: 'control-label' %>
+                <%= select_tag :shop,
+                               options_from_collection_for_select(Shop.all,
+                                                                  'id',
+                                                                  'name',
+                                                                  selected: params[:shop]),
+                               include_blank: true,
+                               class: 'form-control'%>
+              </div>
+              <div class="form-group">
+                <%= label_tag :item,
+                              'Товар:', class: 'control-label' %>
+                <%= select_tag :item,
+                               options_from_collection_for_select(Item.all,
+                                                                  'id',
+                                                                  'sku',
+                                                                  selected: params[:item]),
+                               include_blank: true,
+                               class: 'form-control'%>
+              </div>
+              <div class="form-group">
+                <%= label_tag :brand,
+                              'Бренд:', class: 'control-label' %>
+                <%= select_tag :brand, options_for_select(Item::BRANDS, selected: params[:brand]),
+                               include_blank: true,
+                               class: 'form-control'%>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary">Отфильтровать</button>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
 
 <div class="panel panel-default">
   <!-- Default panel contents -->
-  <div class="panel-heading">Результат сканирования</div>
+  <div class="panel-heading"><strong>Результат сканирования</strong>
+    <div class="pull-right">результат обновлен: <%= Time.now.strftime("%H:%M / %d-%m-%Y") %></div>
+  </div>
   <div class="panel-body">
-    <p>...</p>
+
   </div>
 
   <!-- Table -->
 
-    <table class="table table-hover">
+    <table class="table table-hover table-striped datatable">
       <thead>
-      <tr>
-        <th>Header 1</th>
-        <th>Header 2</th>
-        <th>Header 3</th>
-        <th>Header 4</th>
-      </tr>
+          <tr>
+            <th>ID</th>
+            <th>Магазин</th>
+            <th>Бренд</th>
+            <th>Товар</th>
+            <th>Цена в магазине</th>
+            <th>Разница</th>
+          </tr>
       </thead>
       <tbody>
-          <tr>
-            <td>result 1</td>
-            <td>result 2</td>
-            <td>result 3</td>
-            <td>result 4</td>
-          </tr>
+          <% @results.each do |result| %>
 
+              <tr <%= raw('class="danger"') if (result.price_diff >= 10) %> >
+                <td><%= result.id %></td>
+                <td><%= result.shop.name %></td>
+                <td><%= result.item.brand %></td>
+                <td><%= result.item.name %></td>
+                <td><%= result.current_price * params[:ye].to_f %> грн.</td>
+                <td><%= result.price_diff %></td>
+              </tr>
+
+          <% end %>
       </tbody>
     </table>
 

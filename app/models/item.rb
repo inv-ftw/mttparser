@@ -1,5 +1,5 @@
 class Item < ActiveRecord::Base
-  BRANDS = %w{ Vinzer Granchio }
+  BRANDS = %w{Vinzer Granchio}
 
   def self.import(file)
     CSV.foreach(file.path, headers: true) do |row|

@@ -1,6 +1,8 @@
-<strong class="pull-left" >Всего: <span class="badge"><%= @shops.count %></span></strong>
-<%= link_to raw('<i class="fa fa-plus"></i> <b>Добавить магазин</b>'), new_shop_path, class: 'pull-right btn btn-primary', data:{no_turbolink: true} %>
-<table class="table table-hover table-striped">
+<div id="page-head">
+    <strong class="pull-left" >Всего: <span class="badge"><%= @shops.count %></span></strong>
+    <%= link_to raw('<i class="fa fa-plus"></i> <b>Добавить магазин</b>'), new_shop_path, class: 'pull-right btn btn-primary', data:{no_turbolink: true} %>
+</div>
+  <table class="table table-hover table-striped datatable">
   <thead>
     <th>#</th>
     <th>Адрес</th>
@@ -24,9 +26,5 @@
       </tr>
   <% end %>
 </table>
-<% if @shops.count >= 10 %>
-    <%= link_to raw('<i class="fa fa-plus"></i> <b>Добавить магазин</b>'), new_shop_path, class: 'pull-right btn btn-primary', data:{no_turbolink: true} %>
-    <%= link_to raw('<i class="fa fa-arrow-up"></i>'), :anchor => "top" %>
-<% end %>
 
 
