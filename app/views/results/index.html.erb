@@ -11,7 +11,7 @@
         </div>
         <div id="collapseOne" class="panel-collapse collapse in">
           <div class="panel-body">
-            <%= form_tag results_path, { method: :get, class: 'form-inline' } do %>
+            <%= form_tag proceed_path, { method: :post, class: 'form-inline' } do %>
                 <div class="form-group">
                   <%= label_tag :diff, 'Допуск %:', class: 'control-label' %>
                   <%= text_field_tag :diff, params[:diff], class: 'form-control', placeholder: '%'%>
@@ -128,7 +128,7 @@
       <tbody>
           <% @results.each do |result| %>
             <% diff = (((result.item.price*result.ex_rate - result.current_price).to_f/(result.item.price*result.ex_rate).to_f)*100) if result.current_price %>
-              <tr <%= raw('class="danger"') if (!result.price_diff.nil? && diff > result.price_diff) %> >
+              <tr <%= raw('class="danger"') if (!result.price_diff.nil? && diff > result.price_diff)  if !diff.nil?%> >
                 <td><%= result.item.sku %></td>
                 <td><%= result.item.name %></td>
                 <td><%= result.item.brand %></td>
@@ -139,7 +139,7 @@
                 <% else %>
                     <td> - </td>
                 <% end %>
-                <% if result.price_diff and diff >= 0 %>
+                <% if !diff.nil? and result.price_diff and diff >= 0 %>
                     <td><%= diff.round(2) %>%</td>
                 <% else %>
                     <td> - </td>

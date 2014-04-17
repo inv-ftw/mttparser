@@ -1,32 +1,39 @@
 class Result < ActiveRecord::Base
-
+  require 'open-uri'
   belongs_to :item
   belongs_to :shop
 
   def get_results(params = {})
-    shops = params[:shop].present? ? Shop.find(params[:shop]) : Shop.all
-    items = params[:item].present? ? Item.find(params[:item]) : Item.all
+    shops = params[:r_shop].present? ? Shop.where(id: params[:r_shop]) : Shop.all
+    items = params[:r_item].present? ? Item.where(id: params[:r_item]) : Item.all
     Result.delete_all
     items.each do |item|
       shops.each do |shop|
         base_url = shop.url
         url = base_url + CGI.escape(item.name)
-        doc = Nokogiri::HTML(open(url))
         result = Result.new
         result.shop = shop
         result.item = item
-
-        current_block = doc.at(shop.tags.item.name + ":contains('#{item.sku}')")
-        current_block = doc.at(shop.tags.item.name + ":contains('#{item.name}')") if current_block.nil?
-        if current_block.present?
-          result.current_price = current_block.at_css(shop.tags.price.name).text.to_f if current_block.at_css(shop.tags.price.name).present?
-          result.price_diff = item.price * 13 - result.current_price if result.current_price.present?
-
+        if url.present? and base_url.last != '/'
+          puts url
+          doc = Nokogiri::HTML(open(url))
+          current_block = doc.at(shop.tags.item.name + ":contains('#{item.sku}')")
+          current_block = doc.at(shop.tags.item.name + ":contains('#{item.name}')") if current_block.nil?
+          if current_block.present?
+            result.current_price = current_block.at_css(shop.tags.price.name).text.to_f if current_block.at_css(shop.tags.price.name).present?
+          end
         end
+        result.price_diff = params[:diff]
+        result.ex_rate = params[:ex_rate]
         result.save
       end
     end
+
+    fix_results
   end
+
+
+  private
 
   def fix_results
     Result.where(current_price: nil).each do |result|
