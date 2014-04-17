@@ -11,6 +11,8 @@ class ResultsController < ApplicationController
   end
 
   def proceed
-
+    #binding.pry
+    r = Result.new
+    r.get_results(params)
   end
 end

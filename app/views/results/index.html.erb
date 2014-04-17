@@ -127,7 +127,7 @@
       </thead>
       <tbody>
           <% @results.each do |result| %>
-            <% diff = (((result.item.price*result.ex_rate - result.current_price).to_f/(result.item.price*result.ex_rate).to_f)*100) %>
+            <% diff = (((result.item.price*result.ex_rate - result.current_price).to_f/(result.item.price*result.ex_rate).to_f)*100) if result.current_price %>
               <tr <%= raw('class="danger"') if (!result.price_diff.nil? && diff > result.price_diff) %> >
                 <td><%= result.item.sku %></td>
                 <td><%= result.item.name %></td>
