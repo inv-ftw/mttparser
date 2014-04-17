@@ -14,5 +14,6 @@ class ResultsController < ApplicationController
     #binding.pry
     r = Result.new
     r.get_results(params)
+    redirect_to root_path
   end
 end
