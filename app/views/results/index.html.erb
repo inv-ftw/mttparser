@@ -2,14 +2,16 @@
     <div class="panel-group" id="accordion">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <div class="pull-right">время последнего запуска: <%= Time.now.strftime("%H:%M / %d-%m-%Y") %></div>
+          <div class="pull-right">
+            <i class="fa fa-tachometer"></i> время последнего запуска: <span class="label label-info" style="font-size: 90%"><%= @last_run.strftime("%H:%M / %d-%m-%Y") %></span>
+          </div> <!--pull-right-->
           <h4 class="panel-title">
             <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
               <i class="fa fa-cog"></i> <strong>Управление сканированием</strong>
             </a>
           </h4>
         </div>
-        <div id="collapseOne" class="panel-collapse collapse in">
+        <div id="collapseOne" class="panel-collapse collapse <%= raw('in') if params.count <= 2 %>">
           <div class="panel-body">
             <%= form_tag proceed_path, { method: :post, class: 'form-inline' } do %>
                 <div class="form-group">
@@ -59,7 +61,7 @@
             </a>
           </h4>
         </div>
-        <div id="collapseTwo" class="panel-collapse collapse">
+        <div id="collapseTwo" class="panel-collapse collapse <%= raw('in') if params.count > 2 %>">
           <div class="panel-body">
             <%= form_tag results_path, { method: :get, class: 'form-inline' } do %>
                 <div class="form-group">
@@ -107,7 +109,7 @@
 <!-- end collaps-->
 
     <hr>
-    <h4 class="pull-right">*данные актуальны на: <span class="label label-info"><%= Time.now.strftime("%H:%M / %d-%m-%Y") %></span></h4>
+    <!--<h4 class="pull-right">*данные актуальны на: <span class="label label-info"><%=  @last_run.strftime("%H:%M / %d-%m-%Y") %></span></h4>-->
     <h3>Результат сканирования: </h3>
 
 
