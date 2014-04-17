@@ -1,85 +1,110 @@
-    <div class="panel panel-default" id="results">
-      <div class="panel-heading"><strong>Управление сканированием</strong>
-        <div class="pull-right">время последнего запуска: <%= Time.now.strftime("%H:%M / %d-%m-%Y") %></div>
-      </div>
-      <div class="panel-body">
-
-          <%= form_tag results_path, { method: :get, class: 'form-inline' } do %>
-              <div class="form-group">
-                <%= label_tag :diff, 'Допуск %', class: 'control-label' %>
-                <%= text_field_tag :diff, params[:diff], class: 'form-control', placeholder: '%'%>
-              </div>
-              <div class="form-group">
-                <%= label_tag :ex_rate, 'Курс $', class: 'control-label' %>
-                <%= text_field_tag :ex_rate, params[:ex_rate], class: 'form-control', placeholder: 'грн за 1$'%>
-              </div>
-              <div class="form-group">
-                <div class="checkbox">
-                  <label>
-                    <input type="checkbox"> Запомнить
-                  </label>
+<!-- start accordion -->
+    <div class="panel-group" id="accordion">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="pull-right">время последнего запуска: <%= Time.now.strftime("%H:%M / %d-%m-%Y") %></div>
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+              <strong>Управление сканированием</strong>
+            </a>
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+          <div class="panel-body">
+            <%= form_tag results_path, { method: :get, class: 'form-inline' } do %>
+                <div class="form-group">
+                  <%= label_tag :diff, 'Допуск %', class: 'control-label' %>
+                  <%= text_field_tag :diff, params[:diff], class: 'form-control', placeholder: '%'%>
                 </div>
-                <!-- Split button -->
-                <div class="btn-group">
+                <div class="form-group">
+                  <%= label_tag :ex_rate, 'Курс $', class: 'control-label' %>
+                  <%= text_field_tag :ex_rate, params[:ex_rate], class: 'form-control', placeholder: 'грн за 1$'%>
+                </div>
+
+                <div class="form-group">
+                  <%= label_tag :r_shop,
+                                'Магазин:', class: 'control-label' %>
+                  <%= select_tag :r_shop,
+                                 options_from_collection_for_select(Shop.all,
+                                                                    'id',
+                                                                    'name',
+                                                                    selected: params[:r_shop]),
+                                 include_blank: true,
+                                 class: 'form-control'%>
+                </div>
+                <div class="form-group">
+                  <%= label_tag :r_item,
+                                'Товар:', class: 'control-label' %>
+                  <%= select_tag :r_item,
+                                 options_from_collection_for_select(Item.all,
+                                                                    'id',
+                                                                    'sku',
+                                                                    selected: params[:r_item]),
+                                 include_blank: true,
+                                 class: 'form-control'%>
+                </div>
+                <div class="form-group">
                   <%= submit_tag 'Сканировать...', name: nil, class: 'btn btn-success' %>
-                  <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Все данные</a></li>
-                    <li><a href="#">Только фильтр</a></li>
-                  </ul>
                 </div>
-              </div>
+            <% end %>
+          </div>
 
-          <% end %>
-
+        </div>
       </div>
-      <ul class="list-group">
-        <li class="list-group-item">
-          <%= form_tag results_path, { method: :get, class: 'form-inline' } do %>
-              <div class="form-group">
-                <%= label_tag :shop,
-                              'Магазин:', class: 'control-label' %>
-                <%= select_tag :shop,
-                               options_from_collection_for_select(Shop.all,
-                                                                  'id',
-                                                                  'name',
-                                                                  selected: params[:shop]),
-                               include_blank: true,
-                               class: 'form-control'%>
-              </div>
-              <div class="form-group">
-                <%= label_tag :item,
-                              'Товар:', class: 'control-label' %>
-                <%= select_tag :item,
-                               options_from_collection_for_select(Item.all,
-                                                                  'id',
-                                                                  'sku',
-                                                                  selected: params[:item]),
-                               include_blank: true,
-                               class: 'form-control'%>
-              </div>
-              <div class="form-group">
-                <%= label_tag :brand,
-                              'Бренд:', class: 'control-label' %>
-                <%= select_tag :brand, options_for_select(Item::BRANDS, selected: params[:brand]),
-                               include_blank: true,
-                               class: 'form-control'%>
-              </div>
-              <div class="form-group">
-              </div>
-              <div class="form-group">
-                <%= submit_tag 'Отфильтровать', name: nil, class: 'btn btn-primary'%>
-              </div>
-              <div class="form-group">
-                <%= link_to 'Сбросить', results_path, class: 'btn btn-info' %>
-              </div>
-          <% end %>
-        </li>
-      </ul>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+              <strong>Фильтр результата</strong>
+            </a>
+          </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse">
+          <div class="panel-body">
+            <%= form_tag results_path, { method: :get, class: 'form-inline' } do %>
+                <div class="form-group">
+                  <%= label_tag :shop,
+                                'Магазин:', class: 'control-label' %>
+                  <%= select_tag :shop,
+                                 options_from_collection_for_select(Shop.all,
+                                                                    'id',
+                                                                    'name',
+                                                                    selected: params[:shop]),
+                                 include_blank: true,
+                                 class: 'form-control'%>
+                </div>
+                <div class="form-group">
+                  <%= label_tag :item,
+                                'Товар:', class: 'control-label' %>
+                  <%= select_tag :item,
+                                 options_from_collection_for_select(Item.all,
+                                                                    'id',
+                                                                    'sku',
+                                                                    selected: params[:item]),
+                                 include_blank: true,
+                                 class: 'form-control'%>
+                </div>
+                <div class="form-group">
+                  <%= label_tag :brand,
+                                'Бренд:', class: 'control-label' %>
+                  <%= select_tag :brand, options_for_select(Item::BRANDS, selected: params[:brand]),
+                                 include_blank: true,
+                                 class: 'form-control'%>
+                </div>
+                <div class="form-group">
+                </div>
+                <div class="form-group">
+                  <%= submit_tag 'Отфильтровать', name: nil, class: 'btn btn-primary'%>
+                </div>
+                <div class="form-group">
+                  <%= link_to 'Сбросить', results_path, class: 'btn btn-info' %>
+                </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
+<!-- end collaps-->
 
     <hr>
     <h4 class="pull-right">*данные актуальны на: <span class="label label-info"><%= Time.now.strftime("%H:%M / %d-%m-%Y") %></span></h4>
