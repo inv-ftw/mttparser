@@ -24,6 +24,23 @@ class Result < ActiveRecord::Base
       end
     end
   end
+
+  def fix_results
+    Result.where(current_price: nil).each do |result|
+      url = result.shop.url + result.item.sku
+      doc = Nokogiri::HTML(open(url))
+
+      current_block = doc.at(result.shop.tags.item.name + ":contains('#{result.item.sku}')")
+      current_block = doc.at(result.shop.tags.item.name + ":contains('#{result.item.name}')") if current_block.nil?
+      if current_block.present?
+        result.current_price = current_block.at_css(result.shop.tags.price.name).text.to_f if current_block.at_css(result.shop.tags.price.name).present?
+        result.price_diff = result.item.price * 13 - result.current_price if result.current_price.present?
+
+      end
+      result.save
+    end
+  end
+
   #handle_asynchronously :get_results
 
 end
