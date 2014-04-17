@@ -134,7 +134,7 @@
                 <td><%= result.item.sku %></td>
                 <td><%= result.item.name %></td>
                 <td><%= result.item.brand %></td>
-                <td><%= result.shop.name %></td>
+                <td><%= link_to result.shop.name, "http://#{result.shop.name}", target: '_blank' %></td>
                 <td><%= (result.item.price * result.ex_rate).round(2) %><span class="hint" data-placement="right" title="Курс $: <%= result.ex_rate %>"> грн.</span></td>
                 <% if result.current_price %>
                     <td> <%= result.current_price.round(2) %> грн.</td>

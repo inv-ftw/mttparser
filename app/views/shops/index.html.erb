@@ -18,7 +18,7 @@
           <tr>
             <td><i class="fa fa-shopping-cart"></i></td>
             <td><%= link_to shop.name, "http://#{shop.name}", target: '_blank' %></td>
-            <td><%= shop.url %></td>
+            <td><%= shop.url %> <%= raw('<span class="label label-warning">POST</span>') if shop.post %></td>
             <td>
               <% if !shop.tags.blank? %>
                 <i rel="tooltip" data-placement="left" title="<%= "Тэги: " + shop.tags.count.to_s %>" class="fa fa-tags hint"></i>

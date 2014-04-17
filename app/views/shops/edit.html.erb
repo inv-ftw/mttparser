@@ -22,6 +22,15 @@
 
         </div>
       </div>
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-10">
+          <div class="checkbox">
+            <label>
+              <%= f.check_box :post %> POST запрос
+            </label>
+          </div>
+        </div>
+      </div>
 
       <% if @shop.tags.any? %>
         <h4><i class="fa fa-tags"></i> Теги</h4>

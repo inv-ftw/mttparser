@@ -23,13 +23,24 @@
         </div>
       </div>
 
-      <% if @shop.tags.any? %>
-          <h3>Теги</h3>
-      <% end %>
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-10">
+          <div class="checkbox">
+            <label>
+              <%= f.check_box :post %> POST запрос
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <%= raw('<h3>Теги</h3>') if @shop.tags.any? %>
+
       <%= f.fields_for :tags do |builder| %>
           <%= render 'tag_fields', f: builder %>
       <% end  %>
       <%= link_to_add_fields raw('<i class="fa fa-tag"></i> Добавить тэг'), f, :tags %>
+
+
       <!-- Button -->
       <div class="form-group">
         <label class="col-md-4 control-label" for="login"></label>
