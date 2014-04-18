@@ -8,7 +8,7 @@
       <div class="form-group">
         <label class="col-md-4 control-label" for="name">Адрес:</label>
         <div class="col-md-4">
-          <%= f.text_field :name, class:'form-control input-md', placeholder: 'Название магазина', required: true %>
+          <%= f.text_field :name, class:'form-control input-md', placeholder: 'Название магазина', required: true, oninvalid: "this.setCustomValidity('Это поле не может быть пустым')" %>
 
         </div>
       </div>
@@ -18,7 +18,7 @@
         <label class="col-md-4 control-label" for="url">Ссылка поиска:</label>
         <div class="col-md-4">
 
-          <%= f.text_field :url, class: 'form-control input-md', placeholder: 'Ссылка', required: true %>
+          <%= f.text_field :url, class: 'form-control input-md', placeholder: 'Ссылка', required: true, oninvalid: "this.setCustomValidity('Это поле не может быть пустым')" %>
 
         </div>
       </div>

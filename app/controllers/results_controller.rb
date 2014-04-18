@@ -1,7 +1,7 @@
 class ResultsController < ApplicationController
   def index
     @results = Result.all.order('updated_at DESC')
-    @last_run = @results.first.updated_at.localtime
+    @last_run = @results.first.updated_at.localtime.strftime("%H:%M / %d-%m-%Y") if @results.first
     conditions = {}
     conditions[:item_id] = params[:item] unless params[:item].blank?
     conditions[:shop_id] = params[:shop] unless params[:shop].blank?

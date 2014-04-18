@@ -1,6 +1,6 @@
 class ShopsController < ApplicationController
   def index
-    @shops = Shop.all
+    @shops = Shop.all.order(:name)
   end
 
   def new
@@ -11,7 +11,7 @@ class ShopsController < ApplicationController
 
     @shop = Shop.new(shop_params)
     if @shop.save
-      redirect_to shops_path, notice: 'Магазин добавлен.'
+      redirect_to shops_path, notice: "Магазин \"#{@shop.name}\" добавлен."
     else
       render action: :new, alert: 'Ошибка!'
     end
@@ -25,15 +25,16 @@ class ShopsController < ApplicationController
     @shop = Shop.find(params[:id])
     #binding.pry
     if @shop.update_attributes(shop_params)
-      redirect_to shops_path, notice: 'Товар обновлен.'
+      redirect_to shops_path, notice: "Магазин \"#{@shop.name}\" обновлен."
     else
       render action: :edit, alert: 'Ошибка!'
     end
   end
 
   def destroy
-    Item.find(params[:id]).destroy
-    redirect_to shops_path, notice: 'Магазин удален.'
+    @shop = Shop.find(params[:id])
+    @shop.destroy
+    redirect_to shops_path, notice: "Магазин \"#{@shop.name}\" удален."
   end
 
   private

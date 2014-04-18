@@ -1,4 +1,4 @@
-<strong class="pull-left" >Всего: <span class="badge"><%= @items.count %></span></strong>
+<strong class="pull-left" >Товары: <span class="badge"><%= @items.count %></span></strong>
 <%= link_to raw('<i class="fa fa-plus"></i> <b>Добавить товар</b>'), new_item_path ,class: 'pull-right btn btn-primary' %>
 <p class="clearfix"></p>
 <hr>
@@ -26,13 +26,4 @@
   </tbody>
 </table>
 
-<% if Rails.env.development? %>
-    <div id="import" style="padding: 5px">
-        Импортировать из CSV файла (колонки: 'id', 'name', 'price', 'brand', 'sku').
-
-        <%= form_tag import_items_path, multipart: true do %>
-            <%= file_field_tag :file %>
-            <%= submit_tag "Импорт" %>
-        <% end %>
-    </div>
-<% end %>
+<%= render 'import' if Rails.env.development? %>

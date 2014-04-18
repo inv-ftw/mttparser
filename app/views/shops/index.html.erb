@@ -1,5 +1,5 @@
 <div id="page-head">
-    <strong class="pull-left" >Всего: <span class="badge"><%= @shops.count %></span></strong>
+    <strong class="pull-left" >Магазины: <span class="badge"><%= @shops.count if @shops.any? %></span></strong>
     <%= link_to raw('<i class="fa fa-plus"></i> <b>Добавить магазин</b>'), new_shop_path, class: 'pull-right btn btn-primary', data:{no_turbolink: true} %>
 </div>
 <p class="clearfix"></p>
@@ -15,17 +15,17 @@
   </thead>
   <tbody>
       <% @shops.each do |shop| %>
-          <tr>
+          <tr <%= raw('class="danger"') if !shop.url.include?('[search_text]')%>>
             <td><i class="fa fa-shopping-cart"></i></td>
             <td><%= link_to shop.name, "http://#{shop.name}", target: '_blank' %></td>
-            <td><%= shop.url %> <%= raw('<span class="label label-warning">POST</span>') if shop.post %></td>
+            <td><%= (link_to raw('<i class="fa fa-external-link"></i>'), shop.url, target: '_blank') if shop.url.include?('://') %> <%= raw('<span class="label label-warning">POST</span>') if shop.post %> <%= shop.url %></td>
             <td>
               <% if !shop.tags.blank? %>
                 <i rel="tooltip" data-placement="left" title="<%= "Тэги: " + shop.tags.count.to_s %>" class="fa fa-tags hint"></i>
               <% end %>
             </td>
             <td><%= link_to raw('<i class="fa fa-pencil"></i> ред.'), edit_shop_path(shop), class: 'btn btn-xs btn-info', data:{no_turbolink: true} %> </td>
-            <td><%= link_to raw('<i class="fa fa-times"></i>'), shop_path(shop), method: :delete, data: { confirm: 'Удалить?' }, class: 'hint btn btn-xs btn-danger', title: 'Удалить' %> </td>
+            <td><%= link_to raw('<i class="fa fa-times"></i>'), shop_path(shop), method: :delete, data: { confirm: "Удалить магазин \"#{shop.name}\" ?" }, class: 'hint btn btn-xs btn-danger', title: 'Удалить' %> </td>
           </tr>
       <% end %>
   </tbody>
