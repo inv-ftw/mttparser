@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.1.1'
 
-gem 'rails', '4.1.0.rc2'
+gem 'rails', '4.1.0'
 
 group :development do
   gem 'spring'
@@ -24,6 +24,8 @@ gem 'nokogiri'
 gem 'bcrypt'
 gem 'delayed_job_active_record'
 gem 'quiet_assets'
+
+gem 'rails_12factor', :group => :production
 
 
 # bundle exec rake doc:rails generates the API under doc/api.
