@@ -10,10 +10,8 @@ class ResultsController < ApplicationController
   end
 
   def proceed
-
-    #binding.pry
-    r = Result.new
-    r.get_results(params)
+    call_rake(:get_results, params)
+    Result.delete_all
     redirect_to root_path
   end
 end
