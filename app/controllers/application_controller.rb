@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :authenticate
 
+
+
   private
 
   def current_user
@@ -20,5 +22,9 @@ class ApplicationController < ActionController::Base
     system "rake #{task} #{args.join(' ')} &"
   end
 
-  helper_method :current_user
+  def get_items
+    Item.all.to_a.each_with_object({}){ |c,h| h[c.name + ' ' + c.sku] = c.sku }
+  end
+
+  helper_method :current_user, :get_items
 end

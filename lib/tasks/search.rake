@@ -7,7 +7,12 @@ task :get_results => :environment do
 File.open("#{Rails.root}/log/rake.log", 'w') do |f|
   f.puts "-------Time: #{Time.now}\n\n"
   shops = ENV['R_SHOP'].present? ? Shop.where(id: ENV['R_SHOP']) : Shop.all
-  items = ENV['R_ITEM'].present? ? Item.where(id: ENV['R_ITEM']) : Item.all
+  items_sku = ENV['R_ITEM'].split(';').reject{|element| element.strip.length == 0}.map{|el| get_items[el]}
+
+  f.puts items_sku.inspect
+  items = items_sku.present? ? Item.where(sku: items_sku) : Item.all
+  f.puts "items count: #{items.count}\n"
+  f.puts ' --- \n'
   items.each do |item|
     shops.each do |shop|
       f.puts "***shopid: #{shop.id}****itemid: #{item.id}*****************"
@@ -119,4 +124,8 @@ def post_params_to_hash(params)
   end
 
   hash
+end
+
+def get_items
+  Item.all.to_a.each_with_object({}){ |c,h| h[c.name + ' ' + c.sku] = c.sku }
 end

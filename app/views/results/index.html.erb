@@ -1,3 +1,48 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script>
+    $(function() {
+        var availableTags = <%= raw(get_items.keys) %>;
+        function split( val ) {
+            return val.split( /;\s*/ );
+        }
+        function extractLast( term ) {
+            return split( term ).pop();
+        }
+
+        $( "#r_item" )
+            // don't navigate away from the field on tab when selecting an item
+                .bind( "keydown", function( event ) {
+                    if ( event.keyCode === $.ui.keyCode.TAB &&
+                            $( this ).data( "ui-autocomplete" ).menu.active ) {
+                        event.preventDefault();
+                    }
+                })
+                .autocomplete({
+                    minLength: 0,
+                    source: function( request, response ) {
+                        // delegate back to autocomplete, but extract the last term
+                        response( $.ui.autocomplete.filter(
+                                availableTags, extractLast( request.term ) ) );
+                    },
+                    focus: function() {
+                        // prevent value inserted on focus
+                        return false;
+                    },
+                    select: function( event, ui ) {
+                        var terms = split( this.value );
+                        // remove the current input
+                        terms.pop();
+                        // add the selected item
+                        terms.push( ui.item.value );
+                        // add placeholder to get the comma-and-space at the end
+                        terms.push( "" );
+                        this.value = terms.join( ";" );
+                        return false;
+                    }
+                });
+    });
+</script>
 <!-- start accordion -->
     <div class="panel-group" id="accordion">
       <div class="panel panel-default">
@@ -35,15 +80,8 @@
                                  class: 'form-control'%>
                 </div>
                 <div class="form-group">
-                  <%= label_tag :r_item,
-                                'Товар:', class: 'control-label' %>
-                  <%= select_tag :r_item,
-                                 options_from_collection_for_select(Item.all,
-                                                                    'id',
-                                                                    'sku',
-                                                                    selected: params[:r_item]),
-                                 include_blank: true,
-                                 class: 'form-control'%>
+                  <%= label_tag :r_item, 'Товар:', class: 'control-label' %>
+                  <%= text_field_tag :r_item, '' ,class: 'form-control'%>
                 </div>
                 <div class="form-group">
                   <%= submit_tag 'Сканировать...', name: nil, class: 'btn btn-success' %>
