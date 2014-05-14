@@ -7,6 +7,11 @@ class ResultsController < ApplicationController
     conditions[:shop_id] = params[:shop] unless params[:shop].blank?
     @results = Result.where(conditions)
     @results = @results.joins(:item).where(items: {brand: params[:brand]}) if params[:brand].present?
+
+    respond_to do |format|
+      format.html
+      format.xls
+    end
   end
 
   def proceed

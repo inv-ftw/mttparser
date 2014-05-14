@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+          xmlns:o="urn:schemas-microsoft-com:office:office"
+          xmlns:x="urn:schemas-microsoft-com:office:excel"
+          xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+          xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Артикул</Data></Cell>
+        <Cell><Data ss:Type="String">Товар</Data></Cell>
+        <Cell><Data ss:Type="String">Рекомендованная цена</Data></Cell>
+        <Cell><Data ss:Type="String">Цена в магазине</Data></Cell>
+      </Row>
+      <% @results.each do |result| %>
+          <Row>
+            <Cell><Data ss:Type="Number"><%= result.item.sku %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= result.item.name %></Data></Cell>
+            <Cell><Data ss:Type="Number"><%= result.item.price * result.ex_rate %></Data></Cell>
+            <Cell><Data ss:Type="Number"><%= result.current_price %></Data></Cell>
+          </Row>
+      <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>
