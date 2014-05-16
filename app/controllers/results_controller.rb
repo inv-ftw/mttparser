@@ -15,7 +15,7 @@ class ResultsController < ApplicationController
   end
 
   def proceed
-    binding.pry
+    #binding.pry
     options = params
     options[:r_item] = params[:r_item].join(',') if params[:r_item].present?
     call_rake(:get_results, options)
