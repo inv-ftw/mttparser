@@ -15,7 +15,10 @@ class ResultsController < ApplicationController
   end
 
   def proceed
-    call_rake(:get_results, params)
+    binding.pry
+    options = params
+    options[:r_item] = params[:r_item].join(',') if params[:r_item].present?
+    call_rake(:get_results, options)
     Result.delete_all
     redirect_to root_path
   end

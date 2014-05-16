@@ -25,7 +25,7 @@ gem 'nokogiri'
 gem 'bcrypt'
 gem 'delayed_job_active_record'
 gem 'quiet_assets'
-
+gem 'chosen-rails'
 gem 'rails_12factor', :group => :production
 
 

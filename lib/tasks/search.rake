@@ -6,11 +6,13 @@ desc 'Search prices'
 task :get_results => :environment do
 File.open("#{Rails.root}/log/rake.log", 'w') do |f|
   f.puts "-------Time: #{Time.now}\n\n"
-  shops = ENV['R_SHOP'].present? ? Shop.where(id: ENV['R_SHOP']) : Shop.all
-  items_sku = ENV['R_ITEM'].split(';').reject{|element| element.strip.length == 0}.map{|el| get_items[el]}
+  shops = ENV['R_SHOP'].present? ? Shop.where(id: ENV['R_SHOP'].split(',')) : Shop.all
+  items_sku = ENV['R_ITEM'].gsub('[','').gsub(']', '').split(',')#.split(';').reject{|element| element.strip.length == 0}.map{|el| get_items[el]}
 
   f.puts items_sku.inspect
-  items = items_sku.present? ? Item.where(sku: items_sku) : Item.all
+  f.puts items_sku.kind_of? Array
+  f.puts items_sku.kind_of? String
+  items = items_sku.present? ? Item.where(id: items_sku) : Item.all
   f.puts "items count: #{items.count}\n"
   f.puts ' --- \n'
   items.each do |item|

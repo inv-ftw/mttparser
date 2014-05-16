@@ -1,46 +1,20 @@
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<style>
+  .chosen-with-drop {
+      position: absolute;
+      z-index: 1111;
+      margin-top: -22px;
+      margin-left: 53px;
+  }
+</style>
 <script>
     $(function() {
-        var availableTags = <%= raw(get_items.keys) %>;
-        function split( val ) {
-            return val.split( /;\s*/ );
-        }
-        function extractLast( term ) {
-            return split( term ).pop();
-        }
-
-        $( "#r_item" )
-            // don't navigate away from the field on tab when selecting an item
-                .bind( "keydown", function( event ) {
-                    if ( event.keyCode === $.ui.keyCode.TAB &&
-                            $( this ).data( "ui-autocomplete" ).menu.active ) {
-                        event.preventDefault();
-                    }
-                })
-                .autocomplete({
-                    minLength: 0,
-                    source: function( request, response ) {
-                        // delegate back to autocomplete, but extract the last term
-                        response( $.ui.autocomplete.filter(
-                                availableTags, extractLast( request.term ) ) );
-                    },
-                    focus: function() {
-                        // prevent value inserted on focus
-                        return false;
-                    },
-                    select: function( event, ui ) {
-                        var terms = split( this.value );
-                        // remove the current input
-                        terms.pop();
-                        // add the selected item
-                        terms.push( ui.item.value );
-                        // add placeholder to get the comma-and-space at the end
-                        terms.push( "" );
-                        this.value = terms.join( ";" );
-                        return false;
-                    }
-                });
+        $('#r_item').chosen(
+                {
+                    allow_single_deselect: true,
+                    no_results_text: 'No results matched',
+                    width: '250px'
+                }
+        );
     });
 </script>
 <!-- start accordion -->
@@ -81,8 +55,9 @@
                 </div>
                 <div class="form-group">
                   <%= label_tag :r_item, 'Товар:', class: 'control-label' %>
-                  <%= text_field_tag :r_item, '' ,class: 'form-control'%>
+                  <%= select_tag :r_item, options_from_collection_for_select(Item.all, 'id','sku', selected: params[:r_item]), include_blank: true , class: 'chosen-select', multiple: true  %>
                 </div>
+                <p></p>
                 <div class="form-group">
                   <%= submit_tag 'Сканировать...', name: nil, class: 'btn btn-success' %>
                 </div>
@@ -106,7 +81,7 @@
                   <%= label_tag :shop,
                                 'Магазин:', class: 'control-label' %>
                   <%= select_tag :shop,
-                                 options_from_collection_for_select(Shop.all,
+                                 options_from_collection_for_select(Shop.where(id: Result.all.collect(&:shop_id)),
                                                                     'id',
                                                                     'name',
                                                                     selected: params[:shop]),
@@ -117,7 +92,7 @@
                   <%= label_tag :item,
                                 'Товар:', class: 'control-label' %>
                   <%= select_tag :item,
-                                 options_from_collection_for_select(Item.all,
+                                 options_from_collection_for_select(Item.where(id: Result.all.collect(&:item_id)),
                                                                     'id',
                                                                     'sku',
                                                                     selected: params[:item]),
@@ -157,12 +132,12 @@
       <thead>
           <tr>
             <th>Артикул</th>
-            <th>Название товара</th>
-            <th>Бренд</th>
+            <th class="hidden-xs">Название товара</th>
+            <th class="hidden-xs">Бренд</th>
             <th>Магазин</th>
             <th>Рекомендуемая цена</th>
             <th>Цена в магазине</th>
-            <th>Отклонение</th>
+            <th class="hidden-xs">Отклонение</th>
           </tr>
       </thead>
       <tbody>
@@ -170,8 +145,8 @@
             <% diff = (((result.item.price*result.ex_rate - result.current_price).to_f/(result.item.price*result.ex_rate).to_f)*100) if result.current_price %>
               <tr <%= raw('class="danger"') if (!result.price_diff.nil? && diff > result.price_diff)  if !diff.nil?%> >
                 <td><%= result.item.sku %></td>
-                <td><%= result.item.name %></td>
-                <td><%= result.item.brand %></td>
+                <td class="hidden-xs"><%= result.item.name %></td>
+                <td class="hidden-xs"><%= result.item.brand %></td>
                 <td><%= link_to result.shop.name, "http://#{result.shop.name}", target: '_blank' %></td>
                 <td><%= (result.item.price * result.ex_rate).round(2) %><span class="hint" data-placement="right" title="Курс $: <%= result.ex_rate %>"> грн.</span></td>
                 <% if result.current_price %>
@@ -180,9 +155,9 @@
                     <td> - </td>
                 <% end %>
                 <% if !diff.nil? and result.price_diff and diff >= 0 %>
-                    <td><%= diff.round(2) %>%</td>
+                    <td class="hidden-xs"><%= diff.round(2) %>%</td>
                 <% else %>
-                    <td> - </td>
+                    <td class="hidden-xs"> - </td>
                 <% end %>
               </tr>
 

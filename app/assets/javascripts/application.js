@@ -15,6 +15,7 @@
 //= require twitter/bootstrap
 //= require bootstrap-select
 //= require turbolinks
+//= require chosen-jquery
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap3
 //= require dataTables/extras/TableTools
