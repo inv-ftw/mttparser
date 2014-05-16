@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     collection { post :import }
   end
   resources :tags
-  resources :results
+  resources :results do
+    collection {post :results_count}
+  end
   resources :shops
   resources :sessions
 
