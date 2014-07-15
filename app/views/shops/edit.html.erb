@@ -1,0 +1,53 @@
+<%= form_for @shop, html: {class: 'form-horizontal'} do |f| %>
+    <fieldset>
+
+      <!-- Form Name -->
+      <legend><i class="fa fa-pencil-square-o"></i> Редактирование магазина</legend>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="name"><%= (link_to raw('<i class="fa fa-external-link"></i>'), "http://#{@shop.name}", target: '_blank') if @shop.name.include?('.') %> Имя</label>
+        <div class="col-md-4">
+          <%= f.text_field :name, class:'form-control input-md', placeholder: 'Название магазина', required: true %>
+
+        </div>
+      </div>
+
+      <!-- Password input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="url"><%= (link_to raw('<i class="fa fa-external-link"></i>'), @shop.url, target: '_blank') if @shop.url.include?('[search_text]') %> Адрес</label>
+        <div class="col-md-4">
+
+          <%= f.text_field :url, class: 'form-control input-md', placeholder: 'Ссылка', required: true %>
+
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-0 col-sm-10 col-md-offset-4">
+          <div class="checkbox">
+            <label>
+              <%= f.check_box :post %><span class="label label-warning">POST</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <!-- Button -->
+      <div class="row-fluid">
+          <div class="form-group">
+            <div class="col-sm-offset-0 col-sm-10 col-md-offset-4">
+              <%= f.submit 'Cохранить', class: 'btn btn-primary' %>
+              <%= link_to 'Отмена', shops_url, class: 'btn btn-default' %>
+            </div>
+          </div>
+      </div>
+      <% if @shop.tags.any? %>
+        <h4><i class="fa fa-tags"></i> Теги</h4>
+      <% end %>
+      <%= f.fields_for :tags do |builder| %>
+        <%= render 'tag_fields', f: builder %>
+      <% end  %>
+      <%= link_to_add_fields raw('<i class="fa fa-tag"></i> Добавить тэг'), f, :tags %>
+
+
+    </fieldset>
+<% end %>

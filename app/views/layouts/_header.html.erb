@@ -1,0 +1,32 @@
+<style>
+  .white-text {
+      color: white !important;
+  }
+  .white-text:hover {
+      color: antiquewhite !important;
+  }
+</style>
+<div class="navbar navbar-default navbar-static-top" style="background-image: url(<%= image_url('parser_logo.png') %>); background-repeat: no-repeat; background-position: center; background-color: #d63a2e; background-size: 15%;">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <%= link_to 'MTT Parser', root_path, class: 'navbar-brand white-text' %>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <%= menu_item raw('<i class="fa fa-beer"></i> <b>Товары</b>'), items_path, class: 'link_to_loader white-text' %>
+        <%= menu_item raw('<i class="fa fa-shopping-cart"></i> <b>Магазины</b>'), shops_path, class: 'link_to_loader white-text' %>
+        <% #menu_item 'Tags', tags_path, class: 'link_to_loader' %>
+
+
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><%= link_to raw('<i class="fa fa-sign-out"></i> <b>Выйти</b>'), logout_path, class: 'white-text' %></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</div>

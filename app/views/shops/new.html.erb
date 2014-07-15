@@ -1,0 +1,53 @@
+<%= form_for @shop, html: {class: 'form-horizontal'} do |f| %>
+    <fieldset>
+
+      <!-- Form Name -->
+      <legend><i class="fa fa-shopping-cart"></i> Добавить магазин</legend>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="name">Адрес:</label>
+        <div class="col-md-4">
+          <%= f.text_field :name, class:'form-control input-md', placeholder: 'Название магазина', required: true, oninvalid: "this.setCustomValidity('Это поле не может быть пустым')" %>
+
+        </div>
+      </div>
+
+      <!-- Password input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="url">Ссылка поиска:</label>
+        <div class="col-md-4">
+
+          <%= f.text_field :url, class: 'form-control input-md', placeholder: 'Ссылка', required: true, oninvalid: "this.setCustomValidity('Это поле не может быть пустым')" %>
+
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-10">
+          <div class="checkbox">
+            <label>
+              <%= f.check_box :post %> POST запрос
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <%= raw('<h3>Теги</h3>') if @shop.tags.any? %>
+
+      <%= f.fields_for :tags do |builder| %>
+          <%= render 'tag_fields', f: builder %>
+      <% end  %>
+      <%= link_to_add_fields raw('<i class="fa fa-tag"></i> Добавить тэг'), f, :tags %>
+
+
+      <!-- Button -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="login"></label>
+        <div class="col-md-4">
+          <%= f.submit 'Добавить', class: 'btn btn-primary' %>
+        </div>
+      </div>
+
+    </fieldset>
+<% end %>

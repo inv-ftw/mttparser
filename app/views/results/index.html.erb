@@ -1,0 +1,205 @@
+<style>
+  .chosen-with-drop {
+      position: absolute;
+      z-index: 1111;
+      margin-top: -22px;
+      margin-left: 53px;
+  }
+</style>
+<% cookie_value = cookies[:results_count].present? ? cookies[:results_count] : 0 %>
+<script>
+    $(function() {
+        function delete_cookie( name ) {
+            document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        }
+
+        $('#r_item').chosen(
+                {
+                    allow_single_deselect: true,
+                    no_results_text: 'No results matched',
+                    width: '250px'
+                }
+        );
+
+         var cookie_value = <%= cookie_value %>;
+        if(cookie_value > 0){
+            $('.results_completed').hide();
+            var percents = 0;
+            var timer = setInterval(function(){
+                $.ajax({
+                    type: "POST",
+                    url: '<%= results_count_results_url %>',
+                    success: function(data){
+                        percents = parseInt(parseInt(data.count)/parseInt(cookie_value)* 100);
+                        $('.progress-bar').attr('aria-valuenow', percents).css('width', percents + '%');
+                        $('.sr-only').text(cookie_value/data.count + '% Complete');
+                    }
+                });
+                if(percents > 99){
+                    delete_cookie('results_count');
+                    $('.progress').hide();
+                    $('.results_completed').show();
+                    clearInterval(timer);
+                    location.reload();
+                }
+            },5000);
+        }
+
+    });
+</script>
+<!-- start accordion -->
+    <div class="panel-group" id="accordion">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="pull-right">
+            <i class="fa fa-tachometer"></i> время последнего запуска: <span class="label label-info" style="font-size: 90%"><%= @last_run %></span>
+          </div> <!--pull-right-->
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+              <i class="fa fa-cog"></i> <strong>Управление сканированием</strong>
+            </a>
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse <%= raw('in') if params.count <= 2 %>">
+          <div class="panel-body">
+            <%= form_tag proceed_path, { method: :post, class: 'form-inline' } do %>
+                <div class="form-group">
+                  <%= label_tag :diff, 'Допуск:', class: 'control-label' %>
+                  <%= text_field_tag :diff, params[:diff], class: 'form-control', placeholder: '%', required: true, oninvalid: "this.setCustomValidity('Это поле не может быть пустым')" %>
+                </div>
+                <div class="form-group">
+                  <%= label_tag :ex_rate, 'Курс:', class: 'control-label' %>
+                  <%= text_field_tag :ex_rate, params[:ex_rate], class: 'form-control', placeholder: 'грн за 1$', required: true, oninvalid: "this.setCustomValidity('Это поле не может быть пустым')" %>
+                </div>
+
+                <div class="form-group">
+                  <%= label_tag :r_shop,
+                                'Магазин:', class: 'control-label' %>
+                  <%= select_tag :r_shop,
+                                 options_from_collection_for_select(Shop.all,
+                                                                    'id',
+                                                                    'name',
+                                                                    selected: params[:r_shop]),
+                                 include_blank: true,
+                                 class: 'form-control'%>
+                </div>
+                <div class="form-group">
+                  <%= label_tag :r_item, 'Товар:', class: 'control-label' %>
+                  <%= select_tag :r_item, options_from_collection_for_select(Item.all.order(:sku), 'id','sku', selected: params[:r_item]), include_blank: true , class: 'chosen-select', multiple: true, data: {placeholder: 'Выберите товар'}  %>
+                </div>
+                <p></p>
+                <div class="form-group">
+                  <%= submit_tag 'Сканировать...', name: nil, class: 'btn btn-success' %>
+                </div>
+            <% end %>
+          </div>
+
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+              <i class="fa fa-filter"></i> <strong>Фильтр результата</strong>
+            </a>
+          </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse <%= raw('in') if params.count > 2 %>">
+          <div class="panel-body">
+            <%= form_tag results_path, { method: :get, class: 'form-inline' } do %>
+                <div class="form-group">
+                  <%= label_tag :shop,
+                                'Магазин:', class: 'control-label' %>
+                  <%= select_tag :shop,
+                                 options_from_collection_for_select(Shop.where(id: Result.all.collect(&:shop_id)),
+                                                                    'id',
+                                                                    'name',
+                                                                    selected: params[:shop]),
+                                 include_blank: true,
+                                 class: 'form-control'%>
+                </div>
+                <div class="form-group">
+                  <%= label_tag :item,
+                                'Товар:', class: 'control-label' %>
+                  <%= select_tag :item,
+                                 options_from_collection_for_select(Item.where(id: Result.all.collect(&:item_id)),
+                                                                    'id',
+                                                                    'sku',
+                                                                    selected: params[:item]),
+                                 include_blank: true,
+                                 class: 'form-control'%>
+                </div>
+                <div class="form-group">
+                  <%= label_tag :brand,
+                                'Бренд:', class: 'control-label' %>
+                  <%= select_tag :brand, options_for_select(Item::BRANDS, selected: params[:brand]),
+                                 include_blank: true,
+                                 class: 'form-control'%>
+                </div>
+                <div class="form-group">
+                </div>
+                <div class="form-group">
+                  <%= submit_tag 'Отфильтровать', name: nil, class: 'btn btn-primary'%>
+                </div>
+                <div class="form-group">
+                  <%= link_to 'Сбросить', results_path, class: 'btn btn-info' %>
+                </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- end collaps-->
+
+    <hr>
+    <!--<h4 class="pull-right">*данные актуальны на: <span class="label label-info"><%=  @last_run %></span></h4>-->
+    <h3>Результат сканирования: </h3>
+    <p class="results_completed label label-info">Парсинг окончен!</p>
+    <% if cookies[:results_count].present? %>
+        <div class="progress progress-striped active">
+          <div class="progress-bar"  role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+            <span class="sr-only">65% Complete</span>
+          </div>
+        </div>
+    <% end %>
+
+    <!-- Table -->
+
+    <table class="datatable table table-hover table-bordered table-striped">
+      <thead>
+          <tr>
+            <th>Артикул</th>
+            <th class="hidden-xs">Название товара</th>
+            <th class="hidden-xs">Бренд</th>
+            <th>Магазин</th>
+            <th>Рекомендуемая цена</th>
+            <th>Цена в магазине</th>
+            <th class="hidden-xs">Отклонение</th>
+          </tr>
+      </thead>
+      <tbody>
+          <% @results.each do |result| %>
+            <% diff = (((result.item.price*result.ex_rate - result.current_price).to_f/(result.item.price*result.ex_rate).to_f)*100) if result.current_price %>
+              <tr <%= raw('class="danger"') if (!result.price_diff.nil? && diff > result.price_diff)  if !diff.nil?%> >
+                <td><%= result.item.sku %></td>
+                <td class="hidden-xs"><%= result.item.name %></td>
+                <td class="hidden-xs"><%= result.item.brand %></td>
+                <td><%= link_to result.shop.name, "http://#{result.shop.name}", target: '_blank' %></td>
+                <td><%= (result.item.price * result.ex_rate).round(2) %><span class="hint" data-placement="right" title="Курс $: <%= result.ex_rate %>"> грн.</span></td>
+                <% if result.current_price %>
+                    <td> <%= result.current_price.round(2) %> грн.</td>
+                <% else %>
+                    <td> - </td>
+                <% end %>
+                <% if !diff.nil? and result.price_diff and diff >= 0 %>
+                    <td class="hidden-xs"><%= diff.round(2) %>%</td>
+                <% else %>
+                    <td class="hidden-xs"> - </td>
+                <% end %>
+              </tr>
+
+          <% end %>
+      </tbody>
+    </table>
+
+<%= link_to 'Экспорт в XLS', results_path(format: 'xls'), class: 'btn btn-primary' %>

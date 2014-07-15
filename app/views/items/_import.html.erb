@@ -1,0 +1,15 @@
+<button type="button" class="btn btn-sm btn-default" data-toggle="collapse" data-target="#import">
+  <i class="fa fa-upload"></i> <strong>Импорт</strong>
+</button>
+
+<div id="import" class="panel panel-default collapse" style="margin-top: 10px">
+  <div class="panel-heading">
+    Импортировать из CSV файла (колонки: 'id', 'name', 'price', 'brand', 'sku').
+  </div>
+  <div class="panel-body">
+      <%= form_tag import_items_path, multipart: true do %>
+          <%= file_field_tag :file %>
+          <%= submit_tag "Импорт" %>
+      <% end %>
+  </div>
+</div>
