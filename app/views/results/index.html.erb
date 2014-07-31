@@ -85,7 +85,7 @@
                 </div>
                 <div class="form-group">
                   <%= label_tag :r_item, 'Товар:', class: 'control-label' %>
-                  <%= select_tag :r_item, options_from_collection_for_select(Item.all.order(:sku), 'id','sku', selected: params[:r_item]), include_blank: true , class: 'chosen-select form-control', multiple: true, data: {placeholder: 'Выберите товар'}  %>
+                  <%= select_tag :r_item, options_from_collection_for_select(Item.all.order(:sku), 'id','sku', selected: params[:r_item]), include_blank: true , class: 'chosen-select', multiple: true, data: {placeholder: 'Выберите товар'}  %>
                 </div>
                 <p></p>
                 <div class="form-group">

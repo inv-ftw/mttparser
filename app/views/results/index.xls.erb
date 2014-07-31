@@ -7,6 +7,7 @@
   <Worksheet ss:Name="Sheet1">
     <Table>
       <Row>
+        <Cell><Data ss:Type="String">Магазин</Data></Cell>
         <Cell><Data ss:Type="String">Артикул</Data></Cell>
         <Cell><Data ss:Type="String">Товар</Data></Cell>
         <Cell><Data ss:Type="String">Рекомендованная цена</Data></Cell>
@@ -14,6 +15,7 @@
       </Row>
       <% @results.each do |result| %>
           <Row>
+            <Cell><Data ss:Type="String"><%= result.shop.name %></Data></Cell>
             <Cell><Data ss:Type="Number"><%= result.item.sku %></Data></Cell>
             <Cell><Data ss:Type="String"><%= result.item.name %></Data></Cell>
             <Cell><Data ss:Type="Number"><%= result.item.price * result.ex_rate %></Data></Cell>
