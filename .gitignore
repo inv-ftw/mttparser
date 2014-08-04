@@ -18,3 +18,4 @@ pickle-email-*.html
 .idea
 .DS_Store
 /db/schema.rb
+/config/database.yml
