@@ -50,7 +50,7 @@ File.open("#{Rails.root}/log/rake.log", 'w') do |f|
       end
       #binding.pry
       if current_block.present?
-        result.current_price = current_block.at_css(shop.tags.price.name).text.gsub(',', '').to_f if current_block.at_css(shop.tags.price.name).present?
+        result.current_price = current_block.at_css(shop.tags.price.name).text.gsub(' ', '').gsub(',', '').to_f if current_block.at_css(shop.tags.price.name).present?
         if result.current_price == 0
           result.current_price = current_block.at_css(shop.tags.price.name).text.gsub(/[^0-9.\\s]/i, '').to_f
         end
@@ -99,9 +99,9 @@ def fix_results(f)
       current_block = doc.at(result.shop.tags.item.name + ":contains('#{result.item.sku}')") if current_block.nil?
     end
     if current_block.present?
-      result.current_price = current_block.at_css(result.shop.tags.price.name).text.to_f if current_block.at_css(result.shop.tags.price.name).present?
+      result.current_price = current_block.at_css(result.shop.tags.price.name).text.gsub(' ', '').to_f if current_block.at_css(result.shop.tags.price.name).present?
       if result.current_price == 0
-        result.current_price = current_block.at_css(result.shop.tags.price.name).text.gsub(/[^0-9.\\s]/i, '').to_f
+        result.current_price = current_block.at_css(result.shop.tags.price.name).text.gsub('/[^0-9.\\s]/i', '').to_f
       end
     end
     f.puts "*********doc: #{doc.present?}******current_block: #{current_block.present?}*********************"
