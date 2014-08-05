@@ -15,8 +15,8 @@ File.open("#{Rails.root}/log/rake.log", 'w') do |f|
   items = items_sku.present? ? Item.where(id: items_sku) : Item.all
   f.puts "items count: #{items.count}\n"
   f.puts ' --- \n'
-  items.each do |item|
-    shops.each do |shop|
+  items.find_each(batch_size: 10) do |item|
+    shops.find_each(batch_size: 10) do |shop|
       f.puts "***shopid: #{shop.id}****itemid: #{item.id}*****************"
       begin
         base_url = shop.url
@@ -70,7 +70,7 @@ end
 
 
 def fix_results(f)
-  Result.where(current_price: nil).each do |result|
+  Result.where(current_price: nil).find_each(batch_size: 10) do |result|
     f.puts "***shopid: #{result.shop.id}****itemid: #{result.item.id}*****************"
     begin
       current_block = nil
