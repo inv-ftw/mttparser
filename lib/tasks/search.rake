@@ -97,6 +97,7 @@ def fix_results(f)
       current_block = doc.at(result.shop.tags.item.name + ":contains('#{result.item.name}')") if current_block.nil?
       current_block = doc.at(result.shop.tags.item.name + ":contains('#{capitalized_name}')") if current_block.nil?
       current_block = doc.at(result.shop.tags.item.name + ":contains('#{result.item.sku}')") if current_block.nil?
+      current_block = doc.at(result.shop.tags.item.name + ":contains('#{result.item.name.gsub(/\p{Cyrillic}/, '').strip}')") if current_block.nil?
     end
     if current_block.present?
       result.current_price = current_block.at_css(result.shop.tags.price.name).text.gsub(' ', '').to_f if current_block.at_css(result.shop.tags.price.name).present?
