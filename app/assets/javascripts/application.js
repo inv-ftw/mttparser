@@ -91,6 +91,7 @@ ready = function () {
 
         bProcessing: true,
         bServerSide: true,
+        iDisplayLength: 100,
         sAjaxSource: $('.ajax_datatable').data('source')
     });
 
