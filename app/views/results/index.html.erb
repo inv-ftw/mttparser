@@ -165,7 +165,7 @@
 
     <!-- Table -->
 
-    <table class="datatable table table-hover table-bordered table-striped">
+    <table class="ajax_datatable table table-hover table-bordered table-striped" data-source="<%= results_url(format: "json")%>">
       <thead>
           <tr>
             <th>Артикул</th>
@@ -178,27 +178,7 @@
           </tr>
       </thead>
       <tbody>
-          <% @results.each do |result| %>
-            <% diff = (((result.item.price*result.ex_rate - result.current_price).to_f/(result.item.price*result.ex_rate).to_f)*100) if result.current_price %>
-              <tr <%= raw('class="danger"') if (!result.price_diff.nil? && diff > result.price_diff)  if !diff.nil?%> >
-                <td><%= result.item.sku %></td>
-                <td class="hidden-xs"><%= result.item.name %></td>
-                <td class="hidden-xs"><%= result.item.brand %></td>
-                <td><%= link_to result.shop.name, "http://#{result.shop.name}", target: '_blank' %></td>
-                <td><%= (result.item.price * result.ex_rate).round(2) %><span class="hint" data-placement="right" title="Курс $: <%= result.ex_rate %>"> грн.</span></td>
-                <% if result.current_price %>
-                    <td> <%= result.current_price.round(2) %> грн.</td>
-                <% else %>
-                    <td> - </td>
-                <% end %>
-                <% if !diff.nil? and result.price_diff and diff >= 0 %>
-                    <td class="hidden-xs"><%= diff.round(2) %>%</td>
-                <% else %>
-                    <td class="hidden-xs"> - </td>
-                <% end %>
-              </tr>
 
-          <% end %>
       </tbody>
     </table>
 
