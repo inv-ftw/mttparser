@@ -7,7 +7,7 @@ task :get_results => :environment do
 File.open("#{Rails.root}/log/rake.log", 'w') do |f|
   f.puts "-------Time: #{Time.now}\n\n"
   shops = ENV['R_SHOP'].present? ? Shop.where(id: ENV['R_SHOP'].split(',')) : Shop.all
-  items_sku = ENV['R_ITEM'].present? ? ENV['R_ITEM'].gsub('[','').gsub(']', '').split(',') : Item.all.collect(&:id)#.split(';').reject{|element| element.strip.length == 0}.map{|el| get_items[el]}
+  items_sku = ENV['R_ITEM'].present? ? ENV['R_ITEM'].gsub('[','').gsub(']', '').split(',') : Item.where(brand: 'Vinzer').collect(&:id)#.split(';').reject{|element| element.strip.length == 0}.map{|el| get_items[el]}
 
   f.puts items_sku.inspect
   f.puts items_sku.kind_of? Array
@@ -97,6 +97,7 @@ def fix_results(f)
       current_block = doc.at(result.shop.tags.item.name + ":contains('#{result.item.name}')") if current_block.nil?
       current_block = doc.at(result.shop.tags.item.name + ":contains('#{capitalized_name}')") if current_block.nil?
       current_block = doc.at(result.shop.tags.item.name + ":contains('#{result.item.sku}')") if current_block.nil?
+      current_block = doc.at(result.shop.tags.item.name + ":contains('#{result.item.name.gsub(/\p{Cyrillic}/, '').strip}')") if current_block.nil?
     end
     if current_block.present?
       result.current_price = current_block.at_css(result.shop.tags.price.name).text.gsub(' ', '').to_f if current_block.at_css(result.shop.tags.price.name).present?
