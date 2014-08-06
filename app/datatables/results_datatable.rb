@@ -52,7 +52,7 @@ class ResultsDatatable
     conditions[:item_id] = par['item'].first unless par['item'].first.blank?
     conditions[:shop_id] = par['shop'].first unless par['shop'].first.blank?
     results = results.where(conditions)
-    #results = results.joins(:item).where(items: {brand: par['brand'].first}) if par['brand'].first.present?
+    results = results.joins(:item).where(items: {brand: par['brand'].first}) if par['brand'].first.present?
 
     results = results.page(page).per_page(per_page)
 
