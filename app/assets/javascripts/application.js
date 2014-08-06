@@ -66,7 +66,7 @@ ready = function () {
         "sPaginationType": "bootstrap"
     });
 
-    $('.ajax-datatable').dataTable( {
+    $('.ajax_datatable').dataTable( {
         "oLanguage": {
             "sProcessing":   "Подождите...",
             "sLengthMenu":   "_MENU_ записей на страницу",
@@ -91,7 +91,7 @@ ready = function () {
 
         bProcessing: true,
         bServerSide: true,
-        sAjaxSource: $('.ajax-datatable').data('source')
+        sAjaxSource: $('.ajax_datatable').data('source')
     });
 
 };
