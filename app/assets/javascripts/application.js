@@ -88,11 +88,30 @@ ready = function () {
                 "sSortDescending": ": активировать для сортировки столбцов по убыванию"
             }
         },
-
+        "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
+            /* Append the grade to the default row class name */
+            //aData[7].hide();
+            if ( aData[6].replace("%", '') * 1 > aData[7] )
+            {
+                //alert(aData[6]);
+                $('td:eq(6)', nRow).parent().addClass( "danger" );
+            } else {
+                //set to red
+            }
+            // do the same for td[2]
+            return nRow;
+        },
         bProcessing: true,
         bServerSide: true,
         iDisplayLength: 100,
-        sAjaxSource: $('.ajax_datatable').data('source')
+        sAjaxSource: $('.ajax_datatable').data('source'),
+        "columnDefs": [
+            {
+                "targets": [ 8 ],
+                "visible": false,
+                "searchable": false
+            }
+        ]
     });
 
 };

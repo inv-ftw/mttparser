@@ -1,6 +1,6 @@
 #encoding: utf-8
 class ResultsDatatable
-  delegate :params, :h, :link_to, :raw, :target, :round, to: :@view
+  delegate :params, :h, :link_to, :raw, :target, to: :@view
 
   def initialize(view, url)
     @view = view
@@ -29,7 +29,8 @@ class ResultsDatatable
               '<span class="hint" data-placement="right" title="Курс $: ' +
               result.ex_rate.to_s + '"> грн.</span>',
           result.current_price ? result.current_price.round(2).to_s + ' грн.' : '-',
-          result.price_diff && !diff(result).nil? && diff(result) >=0 ? diff(result).round(2).to_s + '%': '-'
+          result.price_diff && !diff(result).nil? && diff(result) >=0 ? diff(result).round(2).to_s + '%': '-',
+          result.price_diff
       ]
     end
   end
@@ -46,18 +47,19 @@ class ResultsDatatable
     url_params = @url.split('?').last
     par = CGI::parse(url_params)
 
-    results = Result.all#.order('updated_at DESC')
+    results = Result.joins(:item).joins(:shop).order("#{sort_column} #{sort_direction}")
 
     conditions = {}
     conditions[:item_id] = par['item'].first unless par['item'].first.blank?
     conditions[:shop_id] = par['shop'].first unless par['shop'].first.blank?
+    #binding.pry
     results = results.where(conditions)
-    results = results.joins(:item).where(items: {brand: par['brand'].first}) if par['brand'].first.present?
+    #results = results.where(items: {brand: par['brand'].first}) if par['brand'].first.present?
 
     results = results.page(page).per_page(per_page)
 
     if params[:sSearch].present?
-      results = results.joins(:item).where("sku like :search or name like :search or brand like :search", search: "%#{params[:sSearch]}%")
+      results = results.where("items.sku like :search or items.name like :search or items.brand like :search", search: "%#{params[:sSearch]}%")
     end
     results
   end
@@ -71,7 +73,7 @@ class ResultsDatatable
   end
 
   def sort_column
-    columns = %w[sku name brand]
+    columns = %w[items.sku items.name items.brand shops.name items.price current_price price_diff]
     columns[params[:iSortCol_0].to_i]
   end
 
