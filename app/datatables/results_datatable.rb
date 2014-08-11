@@ -40,13 +40,13 @@ class ResultsDatatable
   end
 
   def results
-    results ||= fetch_results
+    @results ||= fetch_results
   end
 
   def fetch_results
     url_params = @url.split('?').last
     par = CGI::parse(url_params)
-
+    #binding.pry
     results = Result.joins(:item).joins(:shop).order("#{sort_column} #{sort_direction}")
 
     conditions = {}
@@ -54,12 +54,12 @@ class ResultsDatatable
     conditions[:shop_id] = par['shop'].first unless par['shop'].first.blank?
     #binding.pry
     results = results.where(conditions)
-    #results = results.where(items: {brand: par['brand'].first}) if par['brand'].first.present?
+    results = results.where(items: {brand: par['brand'].first}) if par['brand'].first.present?
 
     results = results.page(page).per_page(per_page)
 
     if params[:sSearch].present?
-      results = results.where("items.sku like :search or items.name like :search or items.brand like :search", search: "%#{params[:sSearch]}%")
+      results = results.where("items.sku like :search or items.name like :search or items.brand like :search or shops.name like :search", search: "%#{params[:sSearch]}%")
     end
     results
   end

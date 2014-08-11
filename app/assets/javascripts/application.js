@@ -19,6 +19,7 @@
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap3
 //= require dataTables/extras/TableTools
+//= require jquery.dataTables.columnFilter
 //= require_tree .
 
 
