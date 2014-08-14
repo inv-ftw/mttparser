@@ -7,7 +7,7 @@ task :get_results => :environment do
 File.open("#{Rails.root}/log/rake.log", 'w') do |f|
   f.puts "-------Time: #{Time.now}\n\n"
   shops = ENV['R_SHOP'].present? ? Shop.where(id: ENV['R_SHOP'].split(',')) : Shop.all
-  items_sku = ENV['R_ITEM'].present? ? ENV['R_ITEM'].gsub('[','').gsub(']', '').split(',') : Item.where(brand: 'Vinzer').collect(&:id)
+  items_sku = ENV['R_ITEM'].present? ? ENV['R_ITEM'].gsub('[','').gsub(']', '').split(',') : Item.all.collect(&:id)
 
   f.puts items_sku.inspect
   f.puts items_sku.kind_of? Array
