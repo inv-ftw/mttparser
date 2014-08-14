@@ -1,6 +1,7 @@
 class ResultsController < ApplicationController
   def index
     @last_run = Result.all.first.updated_at.localtime.strftime("%H:%M / %d-%m-%Y") if Result.all.first
+    @results = Result.all
     respond_to do |format|
       format.html
       format.xls
