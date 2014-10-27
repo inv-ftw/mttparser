@@ -65,11 +65,11 @@
             <%= form_tag proceed_path, { method: :post, class: 'form-inline' } do %>
                 <div class="form-group">
                   <%= label_tag :diff, 'Допуск:', class: 'control-label' %>
-                  <%= text_field_tag :diff, params[:diff], class: 'form-control', placeholder: '%', required: true, oninvalid: "this.setCustomValidity('Это поле не может быть пустым')" %>
+                  <%= text_field_tag :diff, params[:diff], class: 'form-control', placeholder: '%' %>
                 </div>
                 <div class="form-group">
                   <%= label_tag :ex_rate, 'Курс:', class: 'control-label' %>
-                  <%= text_field_tag :ex_rate, params[:ex_rate], class: 'form-control', placeholder: 'грн за 1$', required: true, oninvalid: "this.setCustomValidity('Это поле не может быть пустым')" %>
+                  <%= text_field_tag :ex_rate, params[:ex_rate], class: 'form-control', placeholder: 'грн за 1$' %>
                 </div>
 
                 <div class="form-group">
